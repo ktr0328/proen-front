@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout align-center>
-      <h1>home</h1>
+      <h1>パズプロ(仮)</h1>
     </v-layout>
   </v-container>
 </template>

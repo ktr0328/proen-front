@@ -7,7 +7,10 @@
       <h1>bbbbbbb</h1>
     </PageBlock>
     <PageBlock full>
-      <img src='https://cdn-ak.f.st-hatena.com/images/fotolife/v/vintraw/20170502/20170502014952.jpg' alt='img'>
+      <v-img
+      src='https://cdn-ak.f.st-hatena.com/images/fotolife/v/vintraw/20170502/20170502014952.jpg' alt='img'
+      aspect-ratio="2.75"
+      />
     </PageBlock>
   </v-container>
 </template>
@@ -17,11 +20,9 @@ import PageBlock from '@/components/common/PageBlock.vue'
 
 export default {
   name: 'home',
-  mounted: function () {
-  },
+  mounted: function () {},
   data () {
-    return {
-    }
+    return {}
   },
   components: {
     PageBlock

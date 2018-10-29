@@ -42,7 +42,7 @@ export default {
   name: 'home',
   mounted: function () {
     this.axios
-      .get('http://localhost:3000/questions')
+      .get(`${config.api.base_url}/questions`)
       .then(e => { this.questions = e.data })
   },
   methods: {

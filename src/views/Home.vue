@@ -8,8 +8,8 @@
     </PageBlock>
     <PageBlock full>
       <v-img
-      src='https://cdn-ak.f.st-hatena.com/images/fotolife/v/vintraw/20170502/20170502014952.jpg' alt='img'
-      aspect-ratio="2.75"
+        src='https://cdn-ak.f.st-hatena.com/images/fotolife/v/vintraw/20170502/20170502014952.jpg' alt='img'
+        aspect-ratio="2.75"
       />
     </PageBlock>
   </v-container>

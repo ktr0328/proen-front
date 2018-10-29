@@ -34,12 +34,13 @@
 </template>
 
 <script>
+import config from '@/config'
 
 export default {
   name: 'Navigation',
   data () {
     return {
-      title: 'パズプロ（仮）',
+      title: config.title,
       drawer: false,
       miniVariant: false,
       items: [{

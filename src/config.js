@@ -1,10 +1,11 @@
 const development = {
   api: {
-    base_url: 'http://localhost:3000/'
+    base_url: 'http://localhost:3000'
   }
 }
 const product = {}
 const common = {
+  title: 'パズプロ（仮）',
   colors: {
     if: 'yellow',
     while: 'orange',

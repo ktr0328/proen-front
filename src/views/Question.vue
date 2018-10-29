@@ -8,10 +8,12 @@
 </template>
 
 <script>
+import config from '@/config'
+
 export default {
   name: 'question',
   mounted: function () {
-    this.axios.get(`http://localhost:3000/questions/${this.$route.params.id}`)
+    this.axios.get(`${config.api.base_url}/questions/${this.$route.params.id}`)
       .then(e => { this.question = e.data })
   },
   data () {

@@ -32,18 +32,19 @@
         </v-hover>
       </v-flex>
     </v-layout>
+    <InfiniteLoading @infinite='infiniteHandler'/>
   </v-container>
 </template>
 
 <script>
 import config from '@/config'
+import { mapState } from 'vuex'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   name: 'home',
   mounted: function () {
-    this.axios
-      .get(`${config.api.base_url}/questions`)
-      .then(e => { this.questions = e.data })
+    this.$store.dispatch('questions/getMany')
   },
   methods: {
     shortText (text) {
@@ -51,13 +52,26 @@ export default {
     },
     getComponentColor (name) {
       return this.colors[name]
+    },
+    async infiniteHandler ($state) {
+      const response = await this.$store.dispatch('questions/getMany')
+      if (!response.length) {
+        $state.complete()
+      } else {
+        $state.loaded()
+      }
     }
   },
+  computed: mapState({
+    questions: state => state.questions.all
+  }),
   data () {
     return {
-      questions: [],
       colors: config.colors
     }
+  },
+  components: {
+    InfiniteLoading
   }
 }
 </script>

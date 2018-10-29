@@ -8,17 +8,18 @@
 </template>
 
 <script>
-import config from '@/config'
+import { mapState } from 'vuex'
 
 export default {
   name: 'question',
   mounted: function () {
-    this.axios.get(`${config.api.base_url}/questions/${this.$route.params.id}`)
-      .then(e => { this.question = e.data })
+    this.$store.dispatch('questions/getOne', { id: this.$route.params.id })
   },
+  computed: mapState({
+    question: state => state.questions.selecting
+  }),
   data () {
     return {
-      question: {}
     }
   }
 }

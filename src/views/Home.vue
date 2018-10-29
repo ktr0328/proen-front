@@ -1,11 +1,34 @@
 <template>
-  <v-container fluid>
-    <v-layout align-center>
-      <h1>パズプロ(仮)</h1>
-    </v-layout>
+  <v-container fluid style='padding: 0'>
+    <PageBlock>
+      <h1>aaaaaaaa</h1>
+    </PageBlock>
+    <PageBlock>
+      <h1>bbbbbbb</h1>
+    </PageBlock>
+    <PageBlock full>
+      <img src='https://cdn-ak.f.st-hatena.com/images/fotolife/v/vintraw/20170502/20170502014952.jpg' alt='img'>
+    </PageBlock>
   </v-container>
 </template>
 
+<script>
+import PageBlock from '@/components/common/PageBlock.vue'
+
+export default {
+  name: 'home',
+  mounted: function () {
+  },
+  data () {
+    return {
+    }
+  },
+  components: {
+    PageBlock
+  }
+}
+</script>
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang='sass' scoped>
 </style>

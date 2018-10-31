@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
     <Navigation/>
     <v-content>
       <router-view/>
@@ -24,3 +25,8 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.link
+  cursor: pointer
+</style>

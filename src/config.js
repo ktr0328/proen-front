@@ -12,6 +12,25 @@ const common = {
     for: 'purple',
     class: 'blue',
     print: 'cyan'
+  },
+  navigation: {
+    views: [
+      {
+        icon: 'fas fa-home',
+        title: 'Home',
+        to: { name: 'home' }
+      },
+      {
+        icon: 'fas fa-shapes',
+        title: 'About',
+        to: { name: 'about' }
+      },
+      {
+        icon: 'fas fa-question',
+        title: 'Questions',
+        to: { name: 'questions' }
+      }
+    ]
   }
 }
 

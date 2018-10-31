@@ -1,20 +1,34 @@
 <template>
   <v-container fluid>
     <h1>questions</h1>
+    <v-toolbar
+      dense
+      floating
+      flat
+    >
+      <v-text-field
+        hide-details
+        prepend-icon="search"
+        single-line
+      ></v-text-field>
+    </v-toolbar>
     <v-layout row wrap>
       <v-flex xs6 v-for='(d, i) in questions' :key='"key" + i'>
         <v-hover>
-          <v-card slot-scope='{ hover }' class='card'>
+          <v-card
+            slot-scope='{ hover }' class='card white--text'
+            color='blue-grey darken-2'
+          >
             <v-card-title primary-title>
-              <div>
-                <h3>{{ d.title }}</h3>
-                <div>{{ shortText(d.text) }}</div>
-              </div>
+              <h3>{{ d.title }}</h3>
             </v-card-title>
+            <v-card-text style='height: 100px'>
+              <div>{{ shortText(d.text) }}</div>
+            </v-card-text>
             <v-expand-transition>
               <router-link
                 v-if="hover"
-                class="link d-flex transition-fast-in-fast-out grey darken-2 v-card--reveal white--text"
+                class="link d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal white--text"
                 style="height: 100%;"
                 :to='"/questions/" + d.id'
                 tag='div'
@@ -22,10 +36,11 @@
                 {{ d.text }}
               </router-link>
             </v-expand-transition>
-            <v-card-actions>
+            <v-divider></v-divider>
+            <v-card-actions class='tags'>
               <v-chip
-                v-for='comp in d.components' :key='"key" + comp'
-                class='component' :color='getComponentColor(comp)'>{{ comp }}
+                v-for='c in d.components' :key='"key" + c'
+                class='component' :color='getComponentColor(c)'>{{ c }}
               </v-chip>
             </v-card-actions>
           </v-card>
@@ -78,7 +93,7 @@ export default {
 
 <style scoped lang='sass'>
 .card
-  margin: 30px
+  margin: 5%
 .v-card--reveal
   align-items: center
   bottom: 0
@@ -87,8 +102,9 @@ export default {
   position: absolute
   width: 100%
   padding: 10px
-.link
-  cursor: pointer
+  overflow: scroll
 .component
   margin: 0 5px
+.tags
+  overflow: scroll
 </style>

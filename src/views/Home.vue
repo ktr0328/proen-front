@@ -1,5 +1,10 @@
 <template>
   <v-container fluid style='padding: 0'>
+    <PageBlock full>
+      <v-img
+        src='https://user-images.githubusercontent.com/25787913/47685923-e0e2fc80-dc1b-11e8-959b-c442696c54f3.png'
+      />
+    </PageBlock>
     <PageBlock>
       <h1>aaaaaaaa</h1>
     </PageBlock>

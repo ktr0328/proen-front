@@ -7,11 +7,13 @@ const product = {}
 const common = {
   title: 'パズプロ（仮）',
   colors: {
-    if: 'yellow',
+    if: 'green',
     while: 'orange',
     for: 'purple',
     class: 'blue',
-    print: 'cyan'
+    print: 'cyan',
+    puts: 'indigo',
+    variable: 'lime'
   },
   navigation: {
     views: [

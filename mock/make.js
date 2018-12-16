@@ -20,9 +20,9 @@ const base = (num) => {
   }
 }
 
-const data = { questions: [] }
+const data = { question: [] }
 for (let i = 1; i <= 200; i++) {
-  data.questions.push(base(i))
+  data.question.push(base(i))
 }
 
 fs.writeFileSync('./mock.json', JSON.stringify(data, null, 2), 'utf-8', err => console.log(err))

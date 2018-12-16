@@ -10,3 +10,11 @@ front end
 ## env
 
 - node:v9.10.0
+
+## db
+
+Project04
+
+or
+
+`yarn mock-server`

@@ -10,10 +10,11 @@
         hide-details
         prepend-icon="search"
         single-line
+        v-model='search'
       ></v-text-field>
     </v-toolbar>
     <v-layout row wrap>
-      <v-flex xs6 v-for='(d, i) in questions' :key='"key" + i'>
+      <v-flex xs6 v-for='(d, i) in filteredQuestions' :key='"key" + i'>
         <v-hover>
           <v-card
             slot-scope='{ hover }' class='card white--text'
@@ -23,7 +24,7 @@
               <h3>{{ d.title }}</h3>
             </v-card-title>
             <v-card-text style='height: 100px'>
-              <div>{{ shortText(d.text) }}</div>
+              <div>{{ shortText(d.content) }}</div>
             </v-card-text>
             <v-expand-transition>
               <router-link
@@ -33,7 +34,7 @@
                 :to='"/questions/" + d.id'
                 tag='div'
               >
-                {{ d.text }}
+                {{ d.content }}
               </router-link>
             </v-expand-transition>
             <v-divider></v-divider>
@@ -47,7 +48,7 @@
         </v-hover>
       </v-flex>
     </v-layout>
-    <InfiniteLoading @infinite='infiniteHandler'/>
+    <!-- <InfiniteLoading @infinite='infiniteHandler'/> -->
   </v-container>
 </template>
 
@@ -77,12 +78,18 @@ export default {
       }
     }
   },
-  computed: mapState({
-    questions: state => state.questions.all
-  }),
+  computed: {
+    ...mapState({
+      questions: state => state.questions.all
+    }),
+    filteredQuestions () {
+      return this.questions.filter(e => e.title.includes(this.search))
+    }
+  },
   data () {
     return {
-      colors: config.colors
+      colors: config.colors,
+      search: ''
     }
   },
   components: {

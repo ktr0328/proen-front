@@ -8,8 +8,8 @@
     </v-toolbar>
 
     <Dialog
-      :text='"result text ".repeat(10)'
-      :isCorrect='true'
+      :text='dialog.text'
+      :isCorrect='dialog.isCorrect'
     />
 
     <v-layout row wrap fill-height class="main-pane">
@@ -98,7 +98,11 @@ export default {
       playGround: [],
       over: false,
       result: '',
-      latest: ''
+      latest: '',
+      dialog: {
+        text: '',
+        isCorrect: false
+      }
     }
   },
   components: {
@@ -131,13 +135,17 @@ export default {
         target.parentNode.removeChild(target)
       }
     },
-    runCode (ev) {
+    async runCode (ev) {
       let result = document.querySelector('#playGround').textContent
       result = result.replace(/\svariable/g, ' ')
       result = result.replace(/\sputs/g, ' puts ')
       this.result = result
       this.latest = 'last modified @' + moment().format('YYYY-MM-DD HH:mm:ss')
 
+      const payload = {}
+      const dialogData = await this.$store.dispatch('question/sendCode', payload)
+      this.dialog.text = dialogData.text
+      this.dialog.isCorrect = dialogData.isCorrect
       this.$store.commit('question/openDialog')
     }
   }

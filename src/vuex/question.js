@@ -1,4 +1,4 @@
-import config from '@/config'
+// import config from '@/config'
 
 export default {
   namespaced: true,
@@ -23,7 +23,14 @@ export default {
   },
   actions: {
     async sendCode (state, payload) {
-      const response = this._$vm.axios.post(`${config.api.base_url}/question/${payload.id}`, payload)
+      // const response = this._$vm.axios.post(`${config.api.base_url}/question/answer/${payload.id}`, payload)
+      const response = {
+        data: {
+          text: 'result text '.repeat(10),
+          isCorrect: true
+        }
+      }
+      console.log(response.data)
       return response.data
     }
   }

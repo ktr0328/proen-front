@@ -28,6 +28,15 @@ const common = {
     indigo: '#3F51B5',
     lime: '#CDDC39'
   },
+  components: {
+    operators: {
+      expression: ['=', '+', '-', '*', '/', '+=', '-=', '*=', '/='],
+      for: ['in'],
+      while: ['==', '!=', '>', '<', '>=', '<='],
+      if: ['==', '!=', '>', '<', '>=', '<='],
+      elsif: ['==', '!=', '>', '<', '>=', '<=']
+    }
+  },
   navigation: {
     views: [
       {

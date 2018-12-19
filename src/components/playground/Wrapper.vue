@@ -5,10 +5,35 @@
     :transferData="data"
     @dragstart='dragStart'
   >
-    <span>{{ data.name }}</span>
-    <input type='text' v-if='data.name !== "else"' v-model='input'>
-    <span class='none'> {{ input }} </span>
-    <span class='none'> ; </span>
+    <v-layout>
+      <v-flex xs2>
+        <span>{{ data.name }}</span>
+      </v-flex>
+      <v-flex xs4
+        v-if='data.name !== "else"'
+      >
+        <v-text-field
+          dark type='text' v-model='inputName'
+          placeholder="何か"
+        />
+        <span class='none'> {{ inputName }} </span>
+      </v-flex>
+      <v-flex xs2
+        v-if='data.name !== "else"'
+      >
+        <v-select :items='operators[data.name]'></v-select>
+      </v-flex>
+      <v-flex xs4
+        v-if='data.name !== "else"'
+      >
+        <v-text-field
+          dark type='text' v-model='inputValue'
+          placeholder="何か"
+        />
+        <span class='none'> {{ inputValue }} ; </span>
+      </v-flex>
+    </v-layout>
+
     <drop class='inner' @drop='onDropInner'>
       <div v-for='(v, i) in children' :key='"key" + i'>
         <expression
@@ -40,8 +65,15 @@ export default {
   },
   data () {
     return {
-      input: '',
-      children: []
+      inputName: '',
+      inputValue: '',
+      children: [],
+      operators: {
+        for: config.components.operators.for,
+        while: config.components.operators.while,
+        if: config.components.operators.if,
+        elsif: config.components.operators.elsif
+      }
     }
   },
   methods: {
@@ -80,7 +112,7 @@ export default {
 .wrapper
   min-height: 50px
   padding: 10px
-  margin: 5px
+  margin: 10px 5px
   color: #fff
   input
     width: 100px
@@ -93,7 +125,7 @@ export default {
     padding-bottom: 30px
     min-height: 100px
     height: 80%
-    width: 80%
+    width: 100%
     margin-left: 10px
 .none
   display: none

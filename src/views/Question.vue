@@ -7,9 +7,14 @@
       <v-btn color='warning' @click='clearComponents'>clear</v-btn>
     </v-toolbar>
 
+    <Dialog
+      :text='"result text ".repeat(10)'
+      :isCorrect='true'
+    />
+
     <v-layout row wrap fill-height class="main-pane">
       <v-flex xs4 class='stripe panes'>
-        <h3 style='margin: 10px'> {{ question.content }} </h3>
+        <p style='margin: 10px'> {{ question.content }} </p>
       </v-flex>
 
       <v-flex xs4 id='playGround' class='panes'>
@@ -62,6 +67,7 @@ import config from '@/config'
 import ComponentBlock from '@/components/playground/ComponentBlock.vue'
 import Wrapper from '@/components/playground/Wrapper.vue'
 import Expression from '@/components/playground/Expression.vue'
+import Dialog from '@/components/playground/Dialog.vue'
 import { Drop } from 'vue-drag-drop'
 
 export default {
@@ -99,7 +105,8 @@ export default {
     Drop,
     ComponentBlock,
     Wrapper,
-    Expression
+    Expression,
+    Dialog
   },
   methods: {
     removeComponent (id) {
@@ -130,18 +137,20 @@ export default {
       result = result.replace(/\sputs/g, ' puts ')
       this.result = result
       this.latest = 'last modified @' + moment().format('YYYY-MM-DD HH:mm:ss')
+
+      this.$store.commit('question/openDialog')
     }
   }
 }
 </script>
 
 <style lang="sass">
-#playGround
-  height: 80%
 .main-pane
-  font-size: 1.3em
-  .panes
-    overflow: scroll
+  font-size: 1.2em
+  overflow: scroll
+.panes
+  overflow: scroll
+  height: 65vh
 .component
   border-radius: 5px
   padding: auto 15px

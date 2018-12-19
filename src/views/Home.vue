@@ -1,19 +1,16 @@
 <template>
-  <v-container fluid style='padding: 0'>
-    <PageBlock full>
-      <h1>1</h1>
-    </PageBlock>
+  <v-container fluid text-xs-center>
     <PageBlock>
-      <h1>aaaaaaaa</h1>
-    </PageBlock>
-    <PageBlock>
-      <h1>bbbbbbb</h1>
+      <h1><span class='orange--text'>パズ</span>ル & <span class='orange--text'>プロ</span>グラミング(仮)</h1>
+      <p v-for='(v, i) in Array(5)' :key='i'>せつめー せつめー せつめー せつめー せつめー せつめー せつめー せつめー せつめー せつめー </p>
     </PageBlock>
     <PageBlock full>
-      <!-- <v-img
-        src='https://cdn-ak.f.st-hatena.com/images/fotolife/v/vintraw/20170502/20170502014952.jpg' alt='img'
-        aspect-ratio="2.75"
-      /> -->
+      <img
+        src='https://user-images.githubusercontent.com/25787913/50053097-41011400-0172-11e9-97ec-055dcf7c5e12.png'
+      />
+    </PageBlock>
+    <PageBlock full>
+      <h1>hoge</h1>
     </PageBlock>
   </v-container>
 </template>
@@ -35,4 +32,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='sass' scoped>
+h1
+  font-size: 2em
+p
+  font-size: 1.5em
 </style>

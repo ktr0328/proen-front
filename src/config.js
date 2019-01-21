@@ -30,11 +30,26 @@ const common = {
   },
   components: {
     operators: {
-      expression: ['=', '+', '-', '*', '/', '+=', '-=', '*=', '/='],
-      for: ['in'],
-      while: ['==', '!=', '>', '<', '>=', '<='],
-      if: ['==', '!=', '>', '<', '>=', '<='],
-      elsif: ['==', '!=', '>', '<', '>=', '<=']
+      expressions: {
+        variable: ['=', '+', '-', '*', '/', '+=', '-=', '*=', '/=']
+      },
+      wrappers: {
+        for: ['in'],
+        while: ['==', '!=', '>', '<', '>=', '<='],
+        if: ['==', '!=', '>', '<', '>=', '<='],
+        elsif: ['==', '!=', '>', '<', '>=', '<=']
+      }
+    },
+    types: {
+      expression: {
+        VARIABLE: 'VARIABLE',
+        PUTS: 'PUTS'
+      },
+      wrapper: {
+        FOR: 'FOR',
+        WHILE: 'WHILE',
+        IF: 'IF'
+      }
     }
   },
   navigation: {

@@ -1,74 +1,60 @@
-<template>
-  <v-container fluid style='padding: 0; height: 90%'>
-    <v-toolbar dark>
-      <v-toolbar-title>Question: {{ question.title }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn color='primary' @click='runCode'>run</v-btn>
-      <v-btn color='warning' @click='clearComponents'>clear</v-btn>
-    </v-toolbar>
+<template lang='pug'>
+  v-container.question(fluid)
+    v-toolbar(dark)
+      v-toolbar-title Question: {{ question.title }}
+      v-spacer
+      v-btn(color='primary' @click='runCode' outline)
+        v-icon play_arrow
+        span run
+      v-btn(color='warning' @click='clearComponents' outline)
+        v-icon block
+        span clear
 
-    <Dialog
+    puzz-dialog(
       :text='dialog.text'
       :isCorrect='dialog.isCorrect'
-    />
+    )
 
-    <v-layout row wrap fill-height class="main-pane">
-      <v-flex xs4 class='stripe panes'>
-        <p style='margin: 10px'> {{ question.content }} </p>
-      </v-flex>
+    v-layout.main(row wrap fill-height)
+      v-flex.panes(xs4)
+        p {{ question.content }}
 
-      <v-flex xs4 id='playGround' class='panes'>
-        <drop style="width: 100%; height: 100%;"
-          :class="{ over }"
-          @drop.self="onDrop"
-          @dragover="over = true"
-          @dragleave="over = false"
-        >
-          <div v-for="(val, i) in playGround" :key="'key-' + i">
-            <Wrapper
+      v-flex#playGround.panes(xs4)
+        drop.drop-zone(
+          :class='{ over }'
+          @drop.self='onDropComponent'
+          @dragover='over = true'
+          @dragleave='over = false'
+        )
+          div(v-for='(val, i) in playGround' :key='"key-" + i')
+            puzz-wrapper.component(
               v-if='val.type === "wrapper"'
               :data='val'
-              class='component'
-            />
-            <Expression
+            )
+            puzz-expression.component(
               v-if='val.type === "expression"'
               :data='val'
-              class='component'
-            />
-          </div>
-        </drop>
-      </v-flex>
+            )
 
-      <v-flex xs4 id='components' class='stripe panes'>
-        <drop
-          style='width: 100%; height: 100%'
-          @drop.self='onDropDelete'
-        >
-          <div v-for="(val, i) in components" :key="'key-' + i" >
-            <ComponentBlock
-              :data="val"
-              class='component'
-            />
-          </div>
-        </drop>
-      </v-flex>
-    </v-layout>
+      v-flex#components.panes(xs4)
+        drop.drop-zone(@drop.self='onDropToDelete')
+          div(v-for='(val, i) in components' :key='"key-" + i')
+            puzz-component.component(:data='val')
 
-    <v-footer absolute height="20%">
-      <v-textarea box label='Result' readonly v-model='result' :hint='latest'></v-textarea>
-    </v-footer>
-  </v-container>
+    v-footer(absolute height='20%')
+      v-textarea(box label='Result' readonly v-model='result' :hint='latest')
+    notifications(group='notify' position='bottom right')
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import moment from 'moment'
-import config from '@/config'
-import ComponentBlock from '@/components/playground/ComponentBlock.vue'
-import Wrapper from '@/components/playground/Wrapper.vue'
-import Expression from '@/components/playground/Expression.vue'
-import Dialog from '@/components/playground/Dialog.vue'
 import { Drop } from 'vue-drag-drop'
+import moment from 'moment'
+import PuzzComponent from '@/components/playground/PuzzComponent.vue'
+import PuzzWrapper from '@/components/playground/PuzzWrapper.vue'
+import PuzzExpression from '@/components/playground/PuzzExpression.vue'
+import PuzzDialog from '@/components/playground/PuzzDialog.vue'
+import config from '@/config'
 
 export default {
   name: 'question',
@@ -80,10 +66,12 @@ export default {
       color: config.colors[e.name]
     }))
   },
-  computed: mapState({
-    question: state => state.questions.selecting,
+  computed: {
+    ...mapState({
+      question: state => state.questions.selecting
+    }),
     contents: () => document.querySelector('#playGround').textContent
-  }),
+  },
   data () {
     return {
       components: [
@@ -105,20 +93,10 @@ export default {
       }
     }
   },
-  components: {
-    Drop,
-    ComponentBlock,
-    Wrapper,
-    Expression,
-    Dialog
-  },
   methods: {
-    removeComponent (id) {
-      this.playGround = this.playGround.filter(e => e._id !== id)
-    },
-    onDrop (data, ev) {
+    onDropComponent (data, ev) {
       const target = this.$store.state.question.draggingElement
-      if (!target.classList.contains('component-block')) {
+      if (!target.classList.contains('puzz-component')) {
         target.parentNode.removeChild(target)
       }
 
@@ -129,39 +107,78 @@ export default {
       this.result = ''
       this.latest = ''
     },
-    onDropDelete (ev) {
+    onDropToDelete (ev) {
       const target = this.$store.state.question.draggingElement
-      if (!target.classList.contains('component-block')) {
+      if (!target.classList.contains('puzz-component')) {
         target.parentNode.removeChild(target)
       }
     },
     async runCode (ev) {
-      let result = document.querySelector('#playGround').textContent
-      result = result.replace(/\svariable/g, ' ')
-      result = result.replace(/\sputs/g, ' puts ')
-      this.result = result
+      let code = document.querySelector('#playGround').textContent
+      code = code.replace(/\svariable/g, ' ')
+      code = code.replace(/\sputs/g, ' puts ')
+
+      const dialogData = await this.$store.dispatch('question/sendCode', {
+        id: this.$route.params.id,
+        code
+      })
+
+      if (!dialogData.result) {
+        this.$notify({
+          group: 'notify',
+          title: 'エラー',
+          text: 'どこか間違いがあるようです。',
+          type: 'error'
+        })
+      }
+
+      this.result = code
       this.latest = 'last modified @' + moment().format('YYYY-MM-DD HH:mm:ss')
 
-      const payload = {}
-      const dialogData = await this.$store.dispatch('question/sendCode', payload)
       this.dialog.text = dialogData.text
-      this.dialog.isCorrect = dialogData.isCorrect
-      this.$store.commit('question/openDialog')
+      // this.dialog.isCorrect = dialogData.isCorrect
+      this.dialog.isCorrect = true
     }
+  },
+  components: {
+    Drop,
+    PuzzComponent,
+    PuzzWrapper,
+    PuzzExpression,
+    PuzzDialog
   }
 }
 </script>
 
-<style lang="sass">
-.main-pane
-  font-size: 1.2em
-  overflow: scroll
-.panes
-  overflow: scroll
-  height: 65vh
-.component
-  border-radius: 5px
-  padding: auto 15px
-.stripe
-  background-color: #f5f5f5
+<style lang='sass'>
+.question
+  padding: 0
+  height: 90%
+  .main
+    font-size: 1.2em
+    .panes
+      overflow: scroll
+      height: 70vh
+      &:nth-child(odd)
+        background-color: #f5f5f5
+      p
+        margin: 10px
+      .drop-zone
+        width: 100%
+        height: 100%
+      .component
+        border-radius: 5px
+        padding: auto 15px
+        cursor: grab
+        &:active
+          cursor: grabbing
+        input
+          text-align: center
+        .none
+          display: none
+  #playGround
+    .component
+      color: #fff
+      margin: 10px 5px
+      padding: 10px
 </style>

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'page-block',
+  name: 'app-page-block',
   props: {
     full: Boolean
   },

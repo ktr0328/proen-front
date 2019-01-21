@@ -1,10 +1,10 @@
 <template>
   <drag
-    :transferData="data"
-    @dragstart="dragstart"
-    @dragend="dragend"
-    class='component-block'
-    :style="{ 'background-color': colorCode(data.color) }"
+    :transferData='data'
+    @dragstart='dragstart'
+    @dragend='dragend'
+    class='puzz-component'
+    :style='{ "background-color": getColorCode(data.color) }'
   >
     <span> {{ data.name }} </span>
   </drag>
@@ -15,7 +15,7 @@ import config from '@/config'
 import { Drag, Drop } from 'vue-drag-drop'
 
 export default {
-  name: 'component-block',
+  name: 'puzz-component',
   props: {
     data: {
       type: Object,
@@ -29,16 +29,15 @@ export default {
   },
   methods: {
     dragstart (ev) {
-      const payload = {
+      this.$store.commit('question/DRAG_START', {
         dragging: this.data,
         draggingElement: this.$el
-      }
-      this.$store.commit('question/dragStart', payload)
+      })
     },
     dragend (ev) {
-      this.$store.commit('question/dragEnd')
+      this.$store.commit('question/DRAG_END')
     },
-    colorCode (name) {
+    getColorCode (name) {
       return config.colorCodes[name]
     }
   },
@@ -49,8 +48,8 @@ export default {
 }
 </script>
 
-<style scoped lang="sass">
-.component-block
+<style scoped lang='sass'>
+.puzz-component
   height: 30px
   width: 50%
   margin: 5px auto

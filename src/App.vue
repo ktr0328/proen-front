@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Material+Icons' rel='stylesheet'>
     <Navigation/>
     <v-content>
       <router-view/>
@@ -9,24 +9,17 @@
 </template>
 
 <script>
-import Navigation from '@/components/common/Navigations.vue'
-// import { mapState } from 'vuex'
+import Navigation from '@/components/common/AppNavigation.vue'
 
 export default {
   name: 'App',
-  mounted: function () {
-  },
-  data () {
-    return {
-    }
-  },
   components: {
     Navigation
   }
 }
 </script>
 
-<style lang="sass">
+<style lang='sass'>
 .link
   cursor: pointer
 </style>

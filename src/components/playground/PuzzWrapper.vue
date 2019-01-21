@@ -1,63 +1,67 @@
 <template>
   <drag
     class='wrapper'
-    :style='{ "background-color": colorCode(data.color) }'
-    :transferData="data"
+    :style='{ "background-color": getColorCode(data.color) }'
+    :transferData='data'
     @dragstart='dragStart'
   >
     <v-layout>
       <v-flex xs2>
-        <span>{{ data.name }}</span>
+        <span class='font-weight-medium'>{{ data.name }}</span>
       </v-flex>
       <v-flex xs4
-        v-if='data.name !== "else"'
+        v-if='!isElse(data.name)'
       >
         <v-text-field
           dark type='text' v-model='inputName'
-          placeholder="何か"
+          placeholder='何か'
         />
         <span class='none'> {{ inputName }} </span>
       </v-flex>
       <v-flex xs2
-        v-if='data.name !== "else"'
+        v-if='!isElse(data.name)'
       >
-        <v-select :items='operators[data.name]'></v-select>
+        <puzz-selector :items='operators[data.name]'/>
       </v-flex>
       <v-flex xs4
-        v-if='data.name !== "else"'
+        v-if='!isElse(data.name)'
       >
         <v-text-field
           dark type='text' v-model='inputValue'
-          placeholder="何か"
+          placeholder='何か'
         />
         <span class='none'> {{ inputValue }} ; </span>
       </v-flex>
     </v-layout>
 
-    <drop class='inner' @drop='onDropInner'>
+    <drop class='wrapper-inner' @drop='onDropInner'>
       <div v-for='(v, i) in children' :key='"key" + i'>
-        <expression
+        <puzz-expression
           :data='v' v-if='v.type === "expression"'
           class='component'
         />
-        <wrapper
+        <puzz-wrapper
           :data='v' v-if='v.type === "wrapper"'
           class='component'
         />
       </div>
     </drop>
-    <span class='none' v-if='noEnd(data.name)'> end; </span>
+    <span class='none' v-if='shouldShowEnd(data.name)'> end; </span>
   </drag>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { Drag, Drop } from 'vue-drag-drop'
+import PuzzExpression from '@/components/playground/PuzzExpression.vue'
+import PuzzWrapper from '@/components/playground/PuzzWrapper.vue'
+import PuzzSelector from '@/components/playground/PuzzSelector.vue'
 import config from '@/config'
-import Expression from '@/components/playground/Expression.vue'
-import Wrapper from '@/components/playground/Wrapper.vue'
+
+const operators = config.components.operators.wrappers
 
 export default {
-  name: 'wrapper',
+  name: 'puzzWrapper',
   props: {
     data: {
       required: true
@@ -68,42 +72,46 @@ export default {
       inputName: '',
       inputValue: '',
       children: [],
-      operators: {
-        for: config.components.operators.for,
-        while: config.components.operators.while,
-        if: config.components.operators.if,
-        elsif: config.components.operators.elsif
-      }
+      operators: operators
     }
+  },
+  computed: {
+    ...mapState({
+      draggingElement: state => state.question.draggingElement
+    })
   },
   methods: {
     onDropInner (data, ev) {
       ev.stopPropagation()
-      const target = this.$store.state.question.draggingElement
-      if (!target.classList.contains('component-block')) { target.parentNode.removeChild(target) }
+      const target = this.draggingElement
+      if (!target.classList.contains('puzz-component')) { target.parentNode.removeChild(target) }
 
       this.children.push(data)
     },
+    shouldShowEnd (name) {
+      return !['elsif', 'else'].includes(name)
+    },
+    isElse (name) {
+      return name === 'else'
+    },
     dragStart (data, ev) {
       ev.stopPropagation()
-      const payload = {
+
+      this.$store.commit('question/DRAG_START', {
         dragging: data,
         draggingElement: this.$el
-      }
-      this.$store.commit('question/dragStart', payload)
+      })
     },
-    colorCode (name) {
+    getColorCode (name) {
       return config.colorCodes[name]
-    },
-    noEnd (name) {
-      return !['elsif', 'else'].includes(name)
     }
   },
   components: {
     Drag,
     Drop,
-    Expression,
-    Wrapper
+    PuzzExpression,
+    PuzzWrapper,
+    PuzzSelector
   }
 }
 </script>
@@ -111,22 +119,9 @@ export default {
 <style lang='sass' scoped>
 .wrapper
   min-height: 50px
-  padding: 10px
-  margin: 10px 5px
-  color: #fff
-  input
-    width: 100px
-    margin-left: 10px
-    border: 1px solid #888
-    color: #333
-    background-color: #fff
-    text-align: center
-  .inner
-    padding-bottom: 30px
+  &-inner
+    padding-bottom: 20px
     min-height: 100px
-    height: 80%
     width: 100%
     margin-left: 10px
-.none
-  display: none
 </style>

@@ -27,7 +27,7 @@
     <v-toolbar
       app
       scroll-off-screen
-      color="success"
+      color="#099268"
       dark
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer" />
@@ -43,7 +43,7 @@
 import config from '@/config'
 
 export default {
-  name: 'Navigation',
+  name: 'AppNavigation',
   data () {
     return {
       title: config.title,

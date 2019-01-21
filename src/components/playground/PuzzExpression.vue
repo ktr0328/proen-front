@@ -1,20 +1,20 @@
 <template>
   <drag
     class='expression'
-    :style='{ "background-color": colorCode(data.color) }'
+    :style='{ "background-color": getColorCode(data.color) }'
     :transferData="data"
     @dragstart='dragStart'
   >
     <v-layout row v-if='data.name === "variable"'>
       <v-flex xs2>
-        <span> {{ data.name }}</span>
+        <span class='font-weight-medium'> {{ data.name }}</span>
       </v-flex>
       <v-flex xs4>
         <v-text-field dark placeholder='変数名' type='text' class='input' v-model='inputName' />
         <span class='none'>{{ inputName }} </span>
       </v-flex>
       <v-flex xs2>
-        <v-select :items='operators'></v-select>
+        <puzz-selector :items='operators[data.name]'/>
       </v-flex>
       <v-flex xs4>
         <v-text-field dark placeholder='値' type='text' v-model='inputValue'></v-text-field>
@@ -36,10 +36,13 @@
 
 <script>
 import { Drag } from 'vue-drag-drop'
+import PuzzSelector from '@/components/playground/PuzzSelector.vue'
 import config from '@/config'
 
+const operators = config.components.operators.expressions
+
 export default {
-  name: 'expression',
+  name: 'puzz-expression',
   props: {
     data: {
       required: true
@@ -49,41 +52,30 @@ export default {
     return {
       inputName: '',
       inputValue: '',
-      operators: config.components.operators.expression
+      operators: operators
     }
   },
   methods: {
     dragStart (data, ev) {
       ev.stopPropagation()
-      const payload = {
+
+      this.$store.commit('question/DRAG_START', {
         dragging: data,
         draggingElement: this.$el
-      }
-      this.$store.commit('question/dragStart', payload)
+      })
     },
-    colorCode (name) {
+    getColorCode (name) {
       return config.colorCodes[name]
     }
   },
   components: {
-    Drag
+    Drag,
+    PuzzSelector
   }
 }
 </script>
 
 <style lang='sass' scoped>
 .expression
-  color: #fff
   min-height: 25px
-  margin: 1px
-  padding: 10px
-  // input
-  //   text-align: center
-    // width: 100px
-    // margin-left: 10px
-    // border: 1px solid #888
-    // color: #333
-    // background-color: #fff
-.none
-  display: none
 </style>

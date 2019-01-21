@@ -11,9 +11,9 @@
         <h1>Result</h1>
       </v-card-title>
       <v-card-text>
-        <v-layout justify-center>
-          <v-icon class='star star-correct' key='on' color='orange' v-if='isCorrect'>fas fa-star</v-icon>
-          <v-icon class='star star-failed' key='off' color='grey' v-else>far fa-star</v-icon>
+        <v-layout justify-center class='star'>
+          <v-icon class='star-correct' key='on' color='orange' v-if='isCorrect'>fas fa-star</v-icon>
+          <v-icon class='star-failed' key='off' color='grey' v-else>far fa-star</v-icon>
         </v-layout>
       </v-card-text>
       <v-card-text>
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: 'result-dialog',
+  name: 'puzz-dialog',
   props: {
     text: {
       type: String,
@@ -47,23 +47,24 @@ export default {
 
 <style lang='sass' scoped>
 .star
-  font-size: 50px
-.star-correct
-  animation: starCorrect 3s ease 1
-  @keyframes starCorrect
-    0%
-      opacity: .1
-      transform: scale(.1, .1) rotate(0deg)
-    100%
-      opacity: 1
-      transform: scale(1, 1) rotate(720deg)
-.star-failed
-  animation: starFailed 1s ease 1
-  @keyframes starFailed
-    0%
-      opacity: .1
-      transform: scale(.1, .1)
-    100%
-      opacity: 1
-      transform: scale(1, 1)
+  i
+    font-size: 50px
+  &-correct
+    animation: starCorrect 3s ease 1
+    @keyframes starCorrect
+      0%
+        opacity: .1
+        transform: scale(.1, .1) rotate(0deg)
+      100%
+        opacity: 1
+        transform: scale(1, 1) rotate(720deg)
+  &-failed
+    animation: starFailed 1s ease 1
+    @keyframes starFailed
+      0%
+        opacity: .1
+        transform: scale(.1, .1)
+      100%
+        opacity: 1
+        transform: scale(1, 1)
 </style>

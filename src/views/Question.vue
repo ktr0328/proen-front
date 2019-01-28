@@ -143,25 +143,19 @@ export default {
         let text = ''
 
         if (data.stderr) {
-          title = 'エラー'
-          text = data.stderr
-        } else {
           title = 'ミス'
-          text = ''
+          text = data.stderr
+          this.$notify({
+            group: 'notify',
+            title,
+            text,
+            type: 'error'
+          })
         }
-
-        this.$notify({
-          group: 'notify',
-          title,
-          text,
-          type: 'error'
-        })
       }
 
       this.result = data.stdout
       this.latest = 'last modified @' + moment().format('YYYY-MM-DD HH:mm:ss')
-
-      // this.dialog.text = dialogData.text
     }
   },
   components: {

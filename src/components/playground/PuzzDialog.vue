@@ -16,13 +16,17 @@
           <v-icon class='star-failed' key='off' color='grey' v-else>far fa-star</v-icon>
         </v-layout>
       </v-card-text>
-      <v-card-text>
-        {{ text }}
-      </v-card-text>
-      <v-card-actions>
-        <v-btn flat color='blue'>back</v-btn>
-        <v-btn flat color='blue'>next</v-btn>
-      </v-card-actions>
+      <v-layout justify-center>
+        <v-card-text>
+          {{ text }}
+        </v-card-text>
+      </v-layout>
+      <v-layout justify-center>
+        <v-card-actions>
+          <v-btn flat color='blue'>back</v-btn>
+          <v-btn flat color='blue'>next</v-btn>
+        </v-card-actions>
+      </v-layout>
     </v-card>
   </v-dialog>
 </template>

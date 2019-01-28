@@ -56,7 +56,15 @@ export default {
       params.append('id', id)
       params.append('code_text', code)
       const response = await this._vm.axios.post(`${config.api.base_url}/execute`, params)
-        .catch(() => ({ data: { result: false } }))
+        .catch(() => {
+          return {
+            data: {
+              result: false,
+              stderr: '意図しないエラーが発生しました',
+              stdout: ''
+            }
+          }
+        })
 
       return response.data
     }

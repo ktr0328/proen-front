@@ -114,6 +114,11 @@ export default {
       }
     },
     async runCode (ev) {
+      if (!this.playGround.length) {
+        alert('コンポーネントを配置してください')
+        return
+      }
+
       let code = document.querySelector('#playGround').textContent
       code = code.replace(/\svariable/g, ' ')
       code = code.replace(/\sputs/g, ' puts ')
@@ -139,12 +144,10 @@ export default {
           this.dialog.text = '正解！'
         }
       } else {
-        let title = ''
-        let text = ''
+        let title = 'ミス'
+        let text = data.stderr
 
         if (data.stderr) {
-          title = 'ミス'
-          text = data.stderr
           this.$notify({
             group: 'notify',
             title,

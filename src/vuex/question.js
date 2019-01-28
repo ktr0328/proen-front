@@ -58,11 +58,6 @@ export default {
       const response = await this._vm.axios.post(`${config.api.base_url}/execute`, params)
         .catch(() => ({ data: { result: false } }))
 
-      if (response.data.result) {
-        response.data.text = '正解！'
-        commit('OPEN_DIALOG')
-      }
-
       return response.data
     }
   }

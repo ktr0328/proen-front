@@ -123,21 +123,45 @@ export default {
         code
       })
 
-      if (!dialogData.result) {
+      this.handleResult(dialogData)
+    },
+    handleResult (data) {
+      if (data.result) {
+        this.dialog.text = '正解！'
+
+        this.$store.commit('question/OPEN_DIALOG')
+
+        if (data.example) {
+          this.dialog.isCorrect = true
+          this.dialog.text = '正解！ おめでとう！'
+        } else {
+          this.dialog.isCorrect = false
+          this.dialog.text = '正解！'
+        }
+      } else {
+        let title = ''
+        let text = ''
+
+        if (data.stderr) {
+          title = 'エラー'
+          text = data.stderr
+        } else {
+          title = 'ミス'
+          text = ''
+        }
+
         this.$notify({
           group: 'notify',
-          title: 'エラー',
-          text: 'どこか間違いがあるようです。',
+          title,
+          text,
           type: 'error'
         })
       }
 
-      this.result = code
+      this.result = data.stdout
       this.latest = 'last modified @' + moment().format('YYYY-MM-DD HH:mm:ss')
 
-      this.dialog.text = dialogData.text
-      // this.dialog.isCorrect = dialogData.isCorrect
-      this.dialog.isCorrect = true
+      // this.dialog.text = dialogData.text
     }
   },
   components: {

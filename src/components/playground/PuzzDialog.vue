@@ -8,7 +8,7 @@
       width='400'
     >
       <v-card-title>
-        <h1>Result</h1>
+        <h1>Success!</h1>
       </v-card-title>
       <v-card-text>
         <v-layout justify-center class='star'>
